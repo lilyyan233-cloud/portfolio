@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lily Yan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --paper: #FEFEFE;
+  --dark-brown: #2C1810;
+  --mid-brown: #8B6B4A;
+  --light-brown: #EAE4DA;
+  --warm-gray: #BEB5A8;
+}
+body {
+  background-color: var(--paper);
+  color: var(--dark-brown);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23grain)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 26px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 200;
+  background: rgba(254,254,254,0.92);
+  backdrop-filter: blur(8px);
+}
+.nav-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--dark-brown);
+  cursor: pointer;
+}
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 0.5px;
+  background: var(--dark-brown);
+  transition: width 0.4s ease;
+}
+.nav-links a:hover { color: var(--dark-brown); }
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100%; }
+.nav-links a.active { color: var(--dark-brown); }
+.lang-toggle {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--warm-gray);
+  cursor: pointer;
+  border: 0.5px solid var(--warm-gray);
+  padding: 4px 10px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+}
+.lang-toggle:hover { color: var(--dark-brown); border-color: var(--dark-brown); }
+
+.page { display: none; position: relative; z-index: 1; }
+.page.active { display: block; }
+
+/* HOME */
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #7A6A58 0%, #3D2E22 55%, #5C4A38 100%);
+  transition: transform 8s ease;
+}
+.hero:hover .hero-photo { transform: scale(1.03); }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.06) 0%,
+    rgba(0,0,0,0.0) 35%,
+    rgba(0,0,0,0.48) 100%
+  );
+}
+.hero-content {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.hero-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  font-weight: 300;
+  color: rgba(254,254,254,0.95);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  margin-bottom: 10px;
+}
+.hero-tagline {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(254,254,254,0.5);
+}
+.hero-enter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(254,254,254,0.65);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.hero-enter:hover { color: rgba(254,254,254,1); }
+.hero-enter-line {
+  width: 36px;
+  height: 0.5px;
+  background: currentColor;
+  transition: width 0.5s ease;
+}
+.hero-enter:hover .hero-enter-line { width: 64px; }
+
+/* WORK */
+.work-page { padding: 130px 60px 80px; }
+.page-header {
+  margin-bottom: 52px;
+  padding-bottom: 26px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px;
+  font-weight: 300;
+}
+.page-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+}
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 260px 260px;
+  gap: 3px;
+}
+.work-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.work-thumb {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s ease;
+}
+.work-item:hover .work-thumb { transform: scale(1.05); }
+.t1 { background: #8B7355; }
+.t2 { background: #6B5A42; }
+.t3 { background: #4A3728; }
+.t4 { background: #7A6247; }
+.t5 { background: #9B8B72; }
+.t6 { background: #7A6A58; }
+.work-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  pointer-events: none;
+}
+.work-label-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: rgba(254,254,254,0.92);
+  font-weight: 400;
+  display: block;
+}
+.work-label-year {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(254,254,254,0.5);
+  text-transform: uppercase;
+}
+
+/* ABOUT + CONTACT */
+.about-page { padding: 130px 60px 0; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 72px;
+  align-items: start;
+  margin-bottom: 72px;
+}
+.about-image-box {
+  background: var(--light-brown);
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--warm-gray);
+}
+.about-text { padding-top: 12px; }
+.about-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+.about-role {
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 32px;
+}
+.about-body {
+  font-size: 13px;
+  color: var(--mid-brown);
+  line-height: 2;
+  margin-bottom: 14px;
+}
+.divider { width: 36px; height: 0.5px; background: var(--light-brown); margin: 26px 0; }
+.detail-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 5px;
+}
+.detail-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--dark-brown);
+  margin-bottom: 20px;
+}
+.contact-section {
+  padding: 52px 0 72px;
+}
+.contact-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+.contact-heading em { font-style: italic; color: var(--mid-brown); }
+.contact-row {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding: 16px 0;
+  max-width: 460px;
+}
+.contact-type {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  min-width: 72px;
+}
+.contact-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  color: var(--dark-brown);
+}
+.footer {
+  padding: 28px 0;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.footer-text { font-size: 11px; letter-spacing: 0.07em; color: var(--warm-gray); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name" onclick="showPage('home')">Lily Yan</span>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="showPage('work')" id="nav-work">Work</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><button class="lang-toggle" onclick="toggleLang()" id="lang-btn">中文</button></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-photo"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div>
+        <div class="hero-name">Lily Yan</div>
+        <div class="hero-tagline" id="txt-tagline">Visual Artist · Documentary Photographer</div>
+      </div>
+      <div class="hero-enter" onclick="showPage('work')">
+        <span id="txt-enter">Enter</span>
+        <span class="hero-enter-line"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK -->
+<div class="page" id="page-work">
+  <div class="work-page">
+    <div class="page-header">
+      <h2 class="page-title" id="txt-work-title">Work</h2>
+      <span class="page-subtitle" id="txt-work-sub">Selected Projects</span>
+    </div>
+    <div class="work-grid">
+      <div class="work-item">
+        <div class="work-thumb t1"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p1">This is (not) Home</span><span class="work-label-year">2025–2026 · Installation</span></div>
+      </div>
+      <div class="work-item">
+        <div class="work-thumb t2"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p2">Village Series</span><span class="work-label-year">2024 · Photography</span></div>
+      </div>
+      <div class="work-item">
+        <div class="work-thumb t3"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p3">Carry / Fine</span><span class="work-label-year">2026 · Film</span></div>
+      </div>
+      <div class="work-item">
+        <div class="work-thumb t4"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p4">Southeast Asia</span><span class="work-label-year">2023 · Documentary</span></div>
+      </div>
+      <div class="work-item">
+        <div class="work-thumb t5"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p5">Archive</span><span class="work-label-year">Ongoing</span></div>
+      </div>
+      <div class="work-item">
+        <div class="work-thumb t6"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p6">New Work</span><span class="work-label-year">2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="about-page">
+    <div class="about-grid">
+      <div class="about-image-box" id="txt-photo-ph">your portrait</div>
+      <div class="about-text">
+        <h2 class="about-name">Lily Yan</h2>
+        <p class="about-role" id="txt-role">Artist · Writer · Photographer</p>
+        <p class="about-body" id="txt-bio1">My practice moves between photography, installation, and documentary work — drawn to the spaces where memory becomes material and belonging resists easy definition.</p>
+        <p class="about-body" id="txt-bio2">I hold an MFA in Experimental & Documentary Arts from Duke University. My thesis project, <em>This is (not) Home</em>, is a multimedia installation exploring an ancestral village near Shanghai through image, text, and object.</p>
+        <div class="divider"></div>
+        <p class="detail-label" id="txt-based-label">Based</p>
+        <p class="detail-value" id="txt-based">New York / Shanghai</p>
+        <p class="detail-label" id="txt-edu-label">Education</p>
+        <p class="detail-value">MFA, Duke University, 2026</p>
+      </div>
+    </div>
+    <div class="contact-section">
+      <h3 class="contact-heading" id="txt-contact-h">Let's be in <em>touch.</em></h3>
+      <div class="contact-row">
+        <span class="contact-type">Email</span>
+        <span class="contact-value">lily@youremail.com</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-type">Instagram</span>
+        <span class="contact-value">@lily.yan</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-type" id="txt-loc-label">Location</span>
+        <span class="contact-value" id="txt-loc">New York, NY</span>
+      </div>
+      <div class="footer">
+        <span class="footer-text" id="txt-footer">© 2026 Lily Yan</span>
+        <span class="footer-text" id="txt-footer2">All rights reserved</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = {
+  en: {
+    tagline:'Visual Artist · Documentary Photographer', enter:'Enter',
+    workTitle:'Work', workSub:'Selected Projects',
+    p1:'This is (not) Home', p2:'Village Series', p3:'Carry / Fine',
+    p4:'Southeast Asia', p5:'Archive', p6:'New Work',
+    role:'Artist · Writer · Photographer',
+    bio1:'My practice moves between photography, installation, and documentary work — drawn to the spaces where memory becomes material and belonging resists easy definition.',
+    bio2:'I hold an MFA in Experimental & Documentary Arts from Duke University. My thesis project, <em>This is (not) Home</em>, is a multimedia installation exploring an ancestral village near Shanghai through image, text, and object.',
+    basedLabel:'Based', based:'New York / Shanghai', eduLabel:'Education',
+    contactH:"Let's be in <em>touch.</em>",
+    locLabel:'Location', loc:'New York, NY',
+    footer:'© 2026 Lily Yan', footer2:'All rights reserved',
+    photoPh:'your portrait', langBtn:'中文'
+  },
+  zh: {
+    tagline:'视觉艺术家 · 纪录摄影师', enter:'进入',
+    workTitle:'作品', workSub:'精选项目',
+    p1:'这不是（家）', p2:'村庄系列', p3:'Carry / Fine',
+    p4:'东南亚', p5:'档案', p6:'新作',
+    role:'艺术家 · 写作者 · 摄影师',
+    bio1:'我的创作在摄影、装置和纪录片之间流动——被记忆成为物质的瞬间，以及归属感难以言说的地带所吸引。',
+    bio2:'我毕业于杜克大学实验与纪录艺术方向，获艺术硕士学位。毕业论文作品《这不是（家）》是一件关于上海郊外祖辈村庄的多媒体装置。',
+    basedLabel:'所在地', based:'纽约 / 上海', eduLabel:'教育',
+    contactH:'保持<em>联系。</em>',
+    locLabel:'所在地', loc:'纽约，美国',
+    footer:'© 2026 颜丽', footer2:'版权所有',
+    photoPh:'你的肖像照', langBtn:'EN'
+  }
+};
+
+let lang = 'en';
+const map = [
+  ['tagline','txt-tagline'],['enter','txt-enter'],
+  ['workTitle','txt-work-title'],['workSub','txt-work-sub'],
+  ['p1','txt-p1'],['p2','txt-p2'],['p3','txt-p3'],
+  ['p4','txt-p4'],['p5','txt-p5'],['p6','txt-p6'],
+  ['role','txt-role'],['bio1','txt-bio1'],['bio2','txt-bio2'],
+  ['basedLabel','txt-based-label'],['based','txt-based'],['eduLabel','txt-edu-label'],
+  ['contactH','txt-contact-h'],['locLabel','txt-loc-label'],['loc','txt-loc'],
+  ['footer','txt-footer'],['footer2','txt-footer2'],['photoPh','txt-photo-ph']
+];
+
+function applyLang() {
+  const t = data[lang];
+  map.forEach(([key, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = t[key];
+  });
+  document.getElementById('lang-btn').textContent = t.langBtn;
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'zh' : 'en';
+  applyLang();
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const el = document.getElementById('nav-' + name);
+  if (el) el.classList.add('active');
+}
+</script>
+</body>
+</html>
