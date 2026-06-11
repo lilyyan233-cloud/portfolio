@@ -101,26 +101,28 @@ nav {
 
 /* HOME */
 .hero {
+  width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
+  cursor: default;
 }
 .hero-photo {
   position: absolute;
-  inset: 0;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: linear-gradient(160deg, #7A6A58 0%, #3D2E22 55%, #5C4A38 100%);
-  transition: transform 8s ease;
+  transform: scale(1);
+  transition: transform 6s ease;
+  will-change: transform;
 }
-.hero:hover .hero-photo { transform: scale(1.03); }
+.hero-photo.zoomed { transform: scale(1.05); }
 .hero-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.06) 0%,
-    rgba(0,0,0,0.0) 35%,
-    rgba(0,0,0,0.48) 100%
-  );
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.0) 35%, rgba(0,0,0,0.48) 100%);
+  z-index: 1;
 }
 .hero-content {
   position: absolute;
@@ -130,6 +132,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  z-index: 2;
 }
 .hero-name {
   font-family: 'Cormorant Garamond', serif;
@@ -156,6 +159,7 @@ nav {
   color: rgba(254,254,254,0.65);
   cursor: pointer;
   transition: color 0.3s;
+  z-index: 2;
 }
 .hero-enter:hover { color: rgba(254,254,254,1); }
 .hero-enter-line {
@@ -197,11 +201,11 @@ nav {
   overflow: hidden;
   cursor: pointer;
 }
- .work-thumb {
+.work-thumb {
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease;
   transform: scale(1);
+  transition: transform 0.5s ease;
   will-change: transform;
 }
 .work-item:hover .work-thumb { transform: scale(1.06); }
@@ -216,6 +220,7 @@ nav {
   bottom: 16px;
   left: 16px;
   pointer-events: none;
+  z-index: 2;
 }
 .work-label-title {
   font-family: 'Cormorant Garamond', serif;
@@ -285,9 +290,7 @@ nav {
   color: var(--dark-brown);
   margin-bottom: 20px;
 }
-.contact-section {
-  padding: 52px 0 72px;
-}
+.contact-section { padding: 52px 0 72px; }
 .contact-heading {
   font-family: 'Cormorant Garamond', serif;
   font-size: 30px;
@@ -337,8 +340,8 @@ nav {
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-photo"></div>
+  <div class="hero" id="hero">
+    <div class="hero-photo" id="hero-photo"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div>
@@ -361,30 +364,18 @@ nav {
       <span class="page-subtitle" id="txt-work-sub">Selected Projects</span>
     </div>
     <div class="work-grid">
-      <div class="work-item">
-        <div class="work-thumb t1"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p1">This is (not) Home</span><span class="work-label-year">2025–2026 · Installation</span></div>
-      </div>
-      <div class="work-item">
-        <div class="work-thumb t2"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p2">Village Series</span><span class="work-label-year">2024 · Photography</span></div>
-      </div>
-      <div class="work-item">
-        <div class="work-thumb t3"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p3">Carry / Fine</span><span class="work-label-year">2026 · Film</span></div>
-      </div>
-      <div class="work-item">
-        <div class="work-thumb t4"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p4">Southeast Asia</span><span class="work-label-year">2023 · Documentary</span></div>
-      </div>
-      <div class="work-item">
-        <div class="work-thumb t5"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p5">Archive</span><span class="work-label-year">Ongoing</span></div>
-      </div>
-      <div class="work-item">
-        <div class="work-thumb t6"></div>
-        <div class="work-label"><span class="work-label-title" id="txt-p6">New Work</span><span class="work-label-year">2026</span></div>
-      </div>
+      <div class="work-item"><div class="work-thumb t1"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p1">This is (not) Home</span><span class="work-label-year">2025–2026 · Installation</span></div></div>
+      <div class="work-item"><div class="work-thumb t2"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p2">Village Series</span><span class="work-label-year">2024 · Photography</span></div></div>
+      <div class="work-item"><div class="work-thumb t3"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p3">Carry / Fine</span><span class="work-label-year">2026 · Film</span></div></div>
+      <div class="work-item"><div class="work-thumb t4"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p4">Southeast Asia</span><span class="work-label-year">2023 · Documentary</span></div></div>
+      <div class="work-item"><div class="work-thumb t5"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p5">Archive</span><span class="work-label-year">Ongoing</span></div></div>
+      <div class="work-item"><div class="work-thumb t6"></div>
+        <div class="work-label"><span class="work-label-title" id="txt-p6">New Work</span><span class="work-label-year">2026</span></div></div>
     </div>
   </div>
 </div>
@@ -429,6 +420,14 @@ nav {
 </div>
 
 <script>
+// 首页悬浮放大 — 用 JS 控制更可靠
+const hero = document.getElementById('hero');
+const heroPhoto = document.getElementById('hero-photo');
+if (hero && heroPhoto) {
+  hero.addEventListener('mouseenter', () => heroPhoto.classList.add('zoomed'));
+  hero.addEventListener('mouseleave', () => heroPhoto.classList.remove('zoomed'));
+}
+
 const data = {
   en: {
     tagline:'Visual Artist · Documentary Photographer', enter:'Enter',
